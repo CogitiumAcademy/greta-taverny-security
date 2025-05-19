@@ -1,3 +1,6 @@
+<?php 
+    session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +10,6 @@
         document.cookie = 'login=my_login';
         document.cookie = 'motdepasse=my_secret_password';
     </script>
-    <?php session_start(); ?>
     <title>Document</title>
 </head>
 <body>
@@ -38,6 +40,14 @@
         <?= "Résultat(s) pour le mot clé :" . $_POST["keyword2"]; ?>
     <?php } ?>
 
+    <?php 
+    if (isset($_POST["username"]) && !empty($_POST["username"])) { 
+        $_SESSION["username"] = $_POST["username"];
+    }
+    ?>
+    <h2>Contenu de la session</h2>
+    <?php var_dump($_SESSION); ?>
+
     <h2>Non sécurisé</h2>
     <form method="post" action="">
         <label for="rech">Recherche</label>
@@ -47,9 +57,16 @@
 
     <h2>Sécurisé</h2>
     <form method="post" action="">
-        <label for="rech">Recherche</label>
-        <input id="rech" type="text" name="keyword2" size="80">
+        <label for="rech2">Recherche</label>
+        <input id="rech2" type="text" name="keyword2" size="80">
         <input type="submit" value="Rechercher">
+    </form>
+
+    <h2>Formulaire session</h2>
+    <form method="post" action="">
+        <label for="username">Username : </label>
+        <input id="username" type="text" name="username" size="25">
+        <input type="submit" value="Enregistrer">
     </form>
 
     <h2>Protection en PHP : htmlentities ou htmlspecialchars</h1>
