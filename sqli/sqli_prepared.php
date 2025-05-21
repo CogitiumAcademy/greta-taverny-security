@@ -29,12 +29,18 @@
     //var_dump($pdo);
 
     try {
-        $query = "SELECT B.login, A.type, A.amount FROM accounts A INNER JOIN users B ON A.id_users = B.id WHERE login = '" . $_POST["login"] . "' AND pass = '" . $_POST["password"] . "'";
+        $query = "SELECT B.login, A.type, A.amount FROM accounts A INNER JOIN users B ON A.id_users = B.id WHERE login = :login AND pass = :password";
         echo $query;
 
-        $req = $pdo->query($query);
+        //$req = $pdo->query($query);
         //var_dump($req);
-        $data = $req->fetchAll();
+
+        $curseur = $pdo->prepare($query);
+        $curseur->bindValue(':login', $_POST['login'], PDO::PARAM_STR);
+        $curseur->bindValue(':password', $_POST['password'], PDO::PARAM_STR);
+        $curseur->execute();
+
+        $data = $curseur->fetchAll();
         //var_dump($data);
 
         echo '<h2>Le résultat</h2>';
